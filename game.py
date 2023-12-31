@@ -3,8 +3,8 @@ from pygame.locals import *
 import time
 import random
 
-SIZE = 40
-BACKGROUND_COLOUR = (255,255,255)
+SIZE = 40 #i want to use increments of 16/32/64
+BACKGROUND_COLOUR = (255,255,255) # change later
 
 class Apple:
     def __init__(self, parent_screen):
@@ -98,15 +98,17 @@ class Game:
         # snake colliding with itself
         for i in range(3,self.snake.length):
             if self.collision(self.snake.x[0], self.snake.y[0], self.snake.x[i], self.snake.y[i]):
-                raise "Game Over"
+                raise "Collision Occured"
             
     def game_over(self):
         self.surface.fill(BACKGROUND_COLOUR)
         font = pygame.font.SysFont("arial", 30)
-        line1 = font.render(f"Gamer Over :( Your score is: {self.snake.length}", True, (0,0,0))
+        line1 = font.render("Gamer Over :(", True, (0,0,0))
         self.surface.blit(line1,(200,300))
-        line2 = font.render(f"To play again press Enter. To exit press Escape!", True, (0,0,0))
+        line2 = font.render(f"Your score is: {self.snake.length}", True, (0,0,0))
         self.surface.blit(line2,(200,350))
+        line3 = font.render("To play again press Enter. To exit press Escape!", True, (0,0,0))
+        self.surface.blit(line3,(200,400))
         pygame.display.flip()
     
     def reset(self):
@@ -141,15 +143,19 @@ class Game:
                 elif event.type == QUIT:
                     running = False
 
-        try:
-            if not pause:
-                self.play()
-        except Exception as e:
-            self.game_over()
-            pause = True
-            self.reset()
+            try:
+                if not pause:
+                    self.play()
+            except Exception as e:
+                self.game_over()
+                pause = True
+                self.reset()
 
             time.sleep(0.2)
+
+       
+
+       
 
 if __name__ == "__main__":
     game = Game()
