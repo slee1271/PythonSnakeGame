@@ -2,15 +2,13 @@ import pygame
 from pygame.locals import * 
 import time
 import random
-import os 
 
-
-SIZE = 32 #i want to use increments of 16/32/64
+SIZE = 40 #i want to use increments of 16/32/64
 BACKGROUND_COLOUR = (255,255,255) # change later
 
 class Apple:
     def __init__(self, parent_screen):
-        self.apple = pygame.image.load("resources/apple2.jpg").convert()
+        self.apple = pygame.image.load("resources/apple.jpg").convert()
         self.parent_screen = parent_screen
         self.x = SIZE * 3
         self.y = SIZE * 3
@@ -21,13 +19,13 @@ class Apple:
 
     def move(self):
         self.x = random.randint(0,24) * SIZE
-        self.y = random.randint(0,24) * SIZE
+        self.y = random.randint(0,19) * SIZE
 
 class Snake: 
     def __init__(self, parent_screen, length):
         self.length = length 
         self.parent_screen = parent_screen
-        self.block = pygame.image.load("resources/block2.jpg").convert()
+        self.block = pygame.image.load("resources/block.jpg").convert()
         self.x = [SIZE]*length
         self.y = [SIZE]*length
         self.direction = "down"
@@ -71,12 +69,8 @@ class Snake:
 
 class Game:
     def __init__(self):
-        
-        os.environ['SDL_VIDEO_CENTERED'] = '1'
-        info = pygame.display.Info()
-        screen_width, screen_height = info.current_w, info.current_h
         pygame.init()
-        self.surface = pygame.display.set_mode((screen_width-20,screen_height-20), pygame.RESIZABLE) #size of display
+        self.surface = pygame.display.set_mode((1000,800)) #size of display
         self.surface.fill(BACKGROUND_COLOUR) 
         self.snake = Snake(self.surface, 7)
         self.snake.draw()
@@ -102,7 +96,7 @@ class Game:
             self.apple.move()
 
         # snake colliding with itself
-        for i in range(1,self.snake.length):
+        for i in range(3,self.snake.length):
             if self.collision(self.snake.x[0], self.snake.y[0], self.snake.x[i], self.snake.y[i]):
                 raise "Collision Occured"
             
@@ -157,7 +151,7 @@ class Game:
                 pause = True
                 self.reset()
 
-            time.sleep(0.1)
+            time.sleep(0.2)
 
 if __name__ == "__main__":
     game = Game()
